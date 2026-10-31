@@ -139,3 +139,9 @@ pids/
 
 # Git credentials (security)
 .git-credentials
+
+# Agent / git worktrees (transient, never committed)
+.agents/
+.agents/worktrees/
+.worktrees/
+.claude/worktrees/
