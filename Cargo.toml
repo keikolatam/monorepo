@@ -8,23 +8,29 @@
 [workspace]
 resolver = "2"
 
+# NOTA (Fase 0, 2026-06-09): paths corregidos a la convención apps/*.
+# DEUDA PREEXISTENTE (anterior a la migración, follow-up de #2):
+#   - los antiguos members `services/*-service` NO existían en disco (drift);
+#     los módulos reales viven en apps/backend/modules/*.
+#   - `apps/backend` depende de un crate `shared` que aún no existe.
+#   - `apps/api-gateway` es un workspace anidado con members fantasma → excluido.
+# El workspace raíz NO compilaba antes de esta migración; el untangling completo
+# excede Fase 0 (ver revisión domain-driven-advisor en el PR).
 members = [
-    "api-gateway/graphql_server",
-    "api-gateway/admin_panel",
-    "services/identity-service",
-    "services/learning-service",
-    "services/reputation-service",
-    "services/passport-service",
-    "services/governance-service",
-    "services/marketplace-service",
+    "apps/backend",
+    "apps/backend/modules/identity",
+    "apps/backend/modules/learning_passport",
+    "apps/backend/modules/reputation",
+    "apps/backend/modules/governance",
+    "apps/backend/modules/marketplace",
+    "apps/backend/modules/selfstudy_guides",
     "shared/types",
     "shared/utils"
 ]
 
 exclude = [
-    "blockchain/target",
-    "blockchain/target-windows",
-    "target-windows"
+    "apps/api-gateway",          # workspace anidado propio
+    "apps/appchain/madara-cli"   # fork vendoreado, workspace propio
 ]
 
 [workspace.dependencies]

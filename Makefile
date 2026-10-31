@@ -145,7 +145,7 @@ appchain-start: ## Iniciar Keikochain (Starknet Appchain)
 .PHONY: appchain-stop
 appchain-stop: ## Detener Keikochain
 	@echo "$(BLUE)⛓️ Deteniendo Keikochain...$(NC)"
-	@podman-compose -f appchain/docker-compose.yml down || docker-compose -f appchain/docker-compose.yml down
+	@podman-compose -f apps/appchain/docker-compose.yml down || docker-compose -f apps/appchain/docker-compose.yml down
 
 .PHONY: grpc-gateway-start
 grpc-gateway-start: ## Iniciar gRPC Gateway
@@ -165,7 +165,7 @@ backend-stop: ## Detener Backend
 .PHONY: frontend-start
 frontend-start: ## Iniciar Frontend Flutter
 	@echo "$(BLUE)🌐 Iniciando Frontend...$(NC)"
-	@cd frontend && flutter run -d web-server --web-port 3001
+	@cd apps/mobile && flutter run -d web-server --web-port 3001
 
 .PHONY: api-gateway-start
 api-gateway-start: ## Iniciar API Gateway
@@ -192,7 +192,7 @@ test-python: ## Ejecutar tests de Python
 .PHONY: test-flutter
 test-flutter: ## Ejecutar tests de Flutter
 	@echo "$(BLUE)🧪 Ejecutando tests de Flutter...$(NC)"
-	@cd frontend && flutter test
+	@cd apps/mobile && flutter test
 
 .PHONY: lint-all
 lint-all: lint-rust lint-python lint-flutter ## Ejecutar linting completo
@@ -212,7 +212,7 @@ lint-python: ## Ejecutar linting de Python
 .PHONY: lint-flutter
 lint-flutter: ## Ejecutar linting de Flutter
 	@echo "$(BLUE)🔍 Ejecutando linting de Flutter...$(NC)"
-	@cd frontend && flutter analyze
+	@cd apps/mobile && flutter analyze
 
 # =============================================================================
 # Build y deployment
@@ -229,15 +229,15 @@ build-rust: ## Construir componentes Rust
 .PHONY: build-flutter
 build-flutter: ## Construir aplicación Flutter
 	@echo "$(BLUE)🏗️ Construyendo aplicación Flutter...$(NC)"
-	@cd frontend && flutter build web
+	@cd apps/mobile && flutter build web
 
 .PHONY: container-build
 container-build: ## Construir imágenes de contenedor (Podman/Docker)
 	@echo "$(BLUE)🐳 Construyendo imágenes de contenedor...$(NC)"
-	@podman build -t $(DOCKER_REGISTRY)/keiko-backend:$(DOCKER_TAG) -f backend/Dockerfile . || \
-	 docker build -t $(DOCKER_REGISTRY)/keiko-backend:$(DOCKER_TAG) -f backend/Dockerfile .
-	@podman build -t $(DOCKER_REGISTRY)/keiko-frontend:$(DOCKER_TAG) -f frontend/Dockerfile frontend/ || \
-	 docker build -t $(DOCKER_REGISTRY)/keiko-frontend:$(DOCKER_TAG) -f frontend/Dockerfile frontend/
+	@podman build -t $(DOCKER_REGISTRY)/keiko-backend:$(DOCKER_TAG) -f apps/backend/Dockerfile . || \
+	 docker build -t $(DOCKER_REGISTRY)/keiko-backend:$(DOCKER_TAG) -f apps/backend/Dockerfile .
+	@podman build -t $(DOCKER_REGISTRY)/keiko-frontend:$(DOCKER_TAG) -f apps/mobile/Dockerfile apps/mobile/ || \
+	 docker build -t $(DOCKER_REGISTRY)/keiko-frontend:$(DOCKER_TAG) -f apps/mobile/Dockerfile apps/mobile/
 
 .PHONY: container-push
 container-push: container-build ## Push imágenes de contenedor al registry
@@ -272,7 +272,7 @@ clean: ## Limpiar contenedores, volúmenes y archivos temporales
 	@podman system prune -f 2>/dev/null || docker system prune -f 2>/dev/null || true
 	@rm -rf logs/*.log
 	@rm -rf target/debug target/release
-	@rm -rf frontend/build
+	@rm -rf apps/mobile/build
 	@echo "$(GREEN)✅ Sistema limpiado$(NC)"
 
 .PHONY: verify-setup

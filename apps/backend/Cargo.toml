@@ -1,0 +1,34 @@
+[package]
+name = "keiko-backend"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "keiko-backend"
+path = "src/main.rs"
+
+[dependencies]
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+sqlx = { workspace = true }
+redis = { workspace = true }
+uuid = { workspace = true }
+chrono = { workspace = true }
+axum = { workspace = true }
+tower = { workspace = true }
+tower-http = { workspace = true }
+tonic = { workspace = true }
+prost = { workspace = true }
+
+# Módulos internos
+identity = { path = "modules/identity" }
+learning_passport = { path = "modules/learning_passport" }
+reputation = { path = "modules/reputation" }
+governance = { path = "modules/governance" }
+marketplace = { path = "modules/marketplace" }
+selfstudy_guides = { path = "modules/selfstudy_guides" }
+shared = { path = "../../shared" }

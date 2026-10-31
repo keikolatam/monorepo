@@ -1,0 +1,22 @@
+name: keiko_ui
+description: >-
+  Keiko shared Flutter UI package (Atomic Design + Material 3). Hosts the
+  branded theme and reusable components (atoms → molecules → organisms)
+  consumed by apps/mobile and apps/widgetbook.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter: {}
