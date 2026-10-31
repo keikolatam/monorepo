@@ -145,3 +145,9 @@ pids/
 .agents/worktrees/
 .worktrees/
 .claude/worktrees/
+
+# Python virtualenvs (build artifacts — regenerable)
+venv/
+.venv/
+**/venv/
+**/.venv/
