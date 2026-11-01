@@ -4,7 +4,7 @@ name: Security Scanning
 # assurance-toolkit. Reuses the `security-scan` composite action from
 # chimeranext/github-actions-templates. `dependency-scan-ref` targets the
 # TypeScript appchain MCP server (appchain/mcp-server/package.json).
-# CodeQL: SAST (languages `typescript, javascript`). Trivy: config/fs/secret
+# CodeQL: SAST (languages `javascript`). Trivy: config/fs/secret
 # scan with fail-on severity. `dependency-scan-ref` runs npm audit in that dir.
 
 on:
@@ -35,8 +35,7 @@ jobs:
         uses: chimeranext/github-actions-templates/security-scan@main
         with:
           languages: |
-            typescript
             javascript
-          language-category: typescript
+          language-category: javascript
           dependency-scan-ref: appchain/mcp-server
           sbom: "true"
