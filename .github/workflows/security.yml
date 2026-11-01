@@ -1,0 +1,41 @@
+name: Security Scanning
+
+# Standardized security workflow (CodeQL + Trivy) — vendored by
+# assurance-toolkit. Reuses the `security-scan` composite action from
+# chimeranext/github-actions-templates. `dependency-scan-ref` targets the
+# TypeScript appchain MCP server (appchain/mcp-server/package.json).
+# CodeQL: SAST (languages `javascript`). Trivy: config/fs/secret
+# scan with fail-on severity. `dependency-scan-ref` runs npm audit in that dir.
+
+on:
+  push:
+    branches:
+      - master
+      - main
+      - develop
+  pull_request:
+    branches:
+      - master
+      - main
+      - develop
+  workflow_dispatch:
+
+jobs:
+  security:
+    name: Security Scan (CodeQL + Trivy)
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Security scan
+        uses: chimeranext/github-actions-templates/security-scan@main
+        with:
+          languages: |
+            javascript
+          language-category: javascript
+          dependency-scan-ref: appchain/mcp-server
+          sbom: "true"
