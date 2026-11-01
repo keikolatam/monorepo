@@ -39,3 +39,4 @@ jobs:
             javascript
           language-category: typescript
           dependency-scan-ref: appchain/mcp-server
+          sbom: "true"
